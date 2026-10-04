@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ReverseLogix AI — Advanced Returns Economics</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    .glass-card { background: rgba(15, 23, 42, 0.82); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.08); }
+    .custom-scrollbar::-webkit-scrollbar { width: 5px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: #334155; border-radius: 9999px; }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen font-sans antialiased custom-scrollbar">
+
+  <header class="border-b border-slate-800 bg-slate-900/90 sticky top-0 z-40 backdrop-blur-md px-6 py-3 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div class="bg-gradient-to-tr from-indigo-600 to-violet-600 p-2.5 rounded-xl shadow-lg">
+        <i class="fa-solid fa-calculator text-xl text-white"></i>
+      </div>
+      <div>
+        <h1 class="text-lg font-bold text-white">ReverseLogix <span class="text-indigo-400 font-extrabold">AI</span></h1>
+        <p class="text-xs text-slate-400">Advanced Cost & Disposition Optimization Hub</p>
+      </div>
+    </div>
+
+    <div class="hidden lg:flex items-center gap-5">
+      <div class="px-3.5 py-1.5 rounded-xl bg-slate-800/60 border border-slate-700/50">
+        <p class="text-[10px] text-slate-400 uppercase font-medium">Net Recovery</p>
+        <p id="totalNetPlText" class="text-xs font-bold font-mono text-emerald-300">$0.00</p>
+      </div>
+      <div class="px-3.5 py-1.5 rounded-xl bg-slate-800/60 border border-slate-700/50">
+        <p class="text-[10px] text-slate-400 uppercase font-medium">Items Evaluated</p>
+        <p id="totalUnitsText" class="text-xs font-bold font-mono text-teal-300">0</p>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-[1700px] mx-auto px-4 lg:px-8 py-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+    <!-- LEFT COLUMN: Image Input & Expanded Financial Adjustments -->
+    <section class="lg:col-span-5 space-y-5">
+      
+      <!-- Scan Card -->
+      <div class="glass-card rounded-2xl p-5 shadow-xl space-y-3">
+        <h2 class="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-2">
+          <i class="fa-solid fa-camera text-indigo-400"></i> Inspection Inputs
+        </h2>
+
+        <form id="inspectionForm" class="space-y-3 text-xs">
+          <div>
+            <label class="text-slate-400 font-medium">Item SKU</label>
+            <input type="text" id="skuInput" value="SKU-PROD-991" required class="w-full p-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-100 font-mono mt-1">
+          </div>
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="text-slate-400 font-medium">Pristine Reference</label>
+              <input type="file" id="refImageInput" accept="image/*" required class="w-full bg-slate-900 border border-slate-800 rounded-xl p-1 text-slate-400">
+            </div>
+            <div>
+              <label class="text-slate-400 font-medium">Returned Item</label>
+              <input type="file" id="tgtImageInput" accept="image/*" required class="w-full bg-slate-900 border border-slate-800 rounded-xl p-1 text-slate-400">
+            </div>
+          </div>
+          <button type="submit" class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold uppercase rounded-xl transition">
+            <i class="fa-solid fa-microscope mr-1"></i> Run Return Decision Matrix
+          </button>
+        </form>
+      </div>
+
+      <!-- Expanded Economic Adjustments & Charges -->
+      <div class="glass-card rounded-2xl p-5 shadow-xl space-y-3">
+        <h2 class="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-2">
+          <i class="fa-solid fa-sliders text-indigo-400"></i> Economic Sliders & Charges
+        </h2>
+
+        <div class="space-y-3 text-xs">
+          <!-- Item Base Economics -->
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <div class="flex justify-between text-slate-300 mb-1"><span>MSRP Value</span><span id="msrpVal" class="font-bold text-indigo-400">$500</span></div>
+              <input type="range" id="msrpSlider" min="50" max="2000" step="10" value="500" class="w-full accent-indigo-500 bg-slate-800 h-1">
+            </div>
+            <div>
+              <div class="flex justify-between text-slate-300 mb-1"><span>Base Shipping</span><span id="freightVal" class="font-bold text-indigo-400">$20</span></div>
+              <input type="range" id="freightSlider" min="5" max="200" step="5" value="20" class="w-full accent-indigo-500 bg-slate-800 h-1">
+            </div>
+          </div>
+
+          <!-- Restocking & Labor Rates -->
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <div class="flex justify-between text-slate-300 mb-1"><span>Restock Fee Rate</span><span id="restockFeeVal" class="font-bold text-indigo-400">10%</span></div>
+              <input type="range" id="restockFeeSlider" min="0" max="30" step="1" value="10" class="w-full accent-indigo-500 bg-slate-800 h-1">
+            </div>
+            <div>
+              <div class="flex justify-between text-slate-300 mb-1"><span>Tech Labor Rate</span><span id="laborRateVal" class="font-bold text-indigo-400">$45/hr</span></div>
+              <input type="range" id="laborRateSlider" min="15" max="120" step="5" value="45" class="w-full accent-indigo-500 bg-slate-800 h-1">
+            </div>
+          </div>
+
+          <!-- Materials & Salvage Credit -->
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <div class="flex justify-between text-slate-300 mb-1"><span>Refurbish Materials</span><span id="refurbVal" class="font-bold text-indigo-400">$25</span></div>
+              <input type="range" id="refurbSlider" min="5" max="150" step="5" value="25" class="w-full accent-indigo-500 bg-slate-800 h-1">
+            </div>
+            <div>
+              <div class="flex justify-between text-slate-300 mb-1"><span>Harvest Parts Value</span><span id="harvestVal" class="font-bold text-indigo-400">$75</span></div>
+              <input type="range" id="harvestSlider" min="10" max="300" step="10" value="75" class="w-full accent-indigo-500 bg-slate-800 h-1">
+            </div>
+          </div>
+
+          <!-- E-Waste Fee & Resale Markdown -->
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <div class="flex justify-between text-slate-300 mb-1"><span>E-Waste Disposal Fee</span><span id="ewasteFeeVal" class="font-bold text-indigo-400">$12</span></div>
+              <input type="range" id="ewasteFeeSlider" min="0" max="50" step="2" value="12" class="w-full accent-indigo-500 bg-slate-800 h-1">
+            </div>
+            <div>
+              <div class="flex justify-between text-slate-300 mb-1"><span>Resale Discount</span><span id="secondaryDiscountVal" class="font-bold text-indigo-400">20%</span></div>
+              <input type="range" id="secondaryDiscountSlider" min="5" max="60" step="5" value="20" class="w-full accent-indigo-500 bg-slate-800 h-1">
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- RIGHT COLUMN: Decision Banner, Item Breakdown & Chart -->
+    <section class="lg:col-span-7 space-y-5">
+      
+      <!-- Recommended Disposition Banner -->
+      <div class="glass-card rounded-2xl p-6 shadow-2xl border-l-4 border-l-indigo-500 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div>
+          <div class="flex items-center gap-2">
+            <span id="lifecycleBadge" class="text-[10px] font-bold uppercase px-2.5 py-0.5 rounded bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">Awaiting Scan</span>
+            <span id="repeatTag" class="hidden text-[10px] px-2 py-0.5 rounded bg-rose-500/20 text-rose-400 font-bold border border-rose-500/30">REPEAT RETURN</span>
+          </div>
+          <h3 id="recommendationText" class="text-2xl font-black text-white mt-1">Pending Inspection</h3>
+          <p id="reasonText" class="text-xs text-slate-400 mt-1">Select pristine & return images to view routing results.</p>
+        </div>
+        <div class="text-right bg-slate-900/80 p-4 rounded-xl border border-slate-800 min-w-[170px]">
+          <p class="text-[10px] text-slate-400 uppercase font-semibold">Net Yield Recovery</p>
+          <p id="netRecoveryText" class="text-2xl font-mono font-black text-emerald-400">$0.00</p>
+          <p id="feeSummaryText" class="text-[10px] text-slate-400 mt-1">Freight: $0.00 | Labor: $0.00</p>
+        </div>
+      </div>
+
+      <!-- Physical Defect Metrics -->
+      <div class="glass-card rounded-2xl p-5 shadow-xl">
+        <h2 class="text-xs font-bold text-slate-300 uppercase tracking-wider mb-3">Defect Inspection Gauges</h2>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
+          <div class="bg-slate-900 p-3 rounded-xl border border-slate-800">
+            <p class="text-[10px] text-slate-400 uppercase">Delta-E Fade</p>
+            <p id="fadePctText" class="text-lg font-bold font-mono text-amber-400 mt-1">0.0%</p>
+          </div>
+          <div class="bg-slate-900 p-3 rounded-xl border border-slate-800">
+            <p class="text-[10px] text-slate-400 uppercase">Crack Fractures</p>
+            <p id="crackPctText" class="text-lg font-bold font-mono text-rose-400 mt-1">0.0%</p>
+          </div>
+          <div class="bg-slate-900 p-3 rounded-xl border border-slate-800">
+            <p class="text-[10px] text-slate-400 uppercase">Distortion</p>
+            <p id="distortionPctText" class="text-lg font-bold font-mono text-indigo-400 mt-1">0.0%</p>
+          </div>
+          <div class="bg-slate-900 p-3 rounded-xl border border-slate-800">
+            <p class="text-[10px] text-slate-400 uppercase">SSIM Score</p>
+            <p id="ssimPctText" class="text-lg font-bold font-mono text-teal-400 mt-1">100.0%</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live Analytics Chart -->
+      <div class="glass-card rounded-2xl p-5 shadow-xl">
+        <h2 class="text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">Performance History</h2>
+        <div class="h-44"><canvas id="plTrendChart"></canvas></div>
+      </div>
+
+    </section>
+  </main>
+
+  <script>
+    const sliderMap = {
+      msrpSlider: ['msrpVal', '$'],
+      freightSlider: ['freightVal', '$'],
+      restockFeeSlider: ['restockFeeVal', '%', 'after'],
+      laborRateSlider: ['laborRateVal', '$/hr', 'after'],
+      refurbSlider: ['refurbVal', '$'],
+      harvestSlider: ['harvestVal', '$'],
+      ewasteFeeSlider: ['ewasteFeeVal', '$'],
+      secondaryDiscountSlider: ['secondaryDiscountVal', '%', 'after']
+    };
+
+    Object.keys(sliderMap).forEach(id => {
+      const [valId, unit, pos] = sliderMap[id];
+      const el = document.getElementById(id);
+      const valEl = document.getElementById(valId);
+      el.addEventListener('input', () => {
+        valEl.textContent = pos === 'after' ? `${el.value}${unit}` : `${unit}${el.value}`;
+      });
+    });
+
+    const ctxPL = document.getElementById('plTrendChart').getContext('2d');
+    const plTrendChart = new Chart(ctxPL, {
+      type: 'line',
+      data: { labels: [], datasets: [{ label: 'Cumulative Net Recovery ($)', data: [], borderColor: '#10b981', backgroundColor: 'rgba(16, 185, 129, 0.1)', fill: true }] },
+      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+    });
+
+    async function refreshAnalytics() {
+      const res = await fetch('/api/analytics');
+      if (!res.ok) return;
+      const data = await res.json();
+      document.getElementById('totalNetPlText').textContent = `$${data.summary.total_net_recovery.toFixed(2)}`;
+      document.getElementById('totalUnitsText').textContent = data.summary.total_inspections;
+
+      plTrendChart.data.labels = data.time_series.map(i => `#${i.id}`);
+      plTrendChart.data.datasets[0].data = data.time_series.map(i => i.running_total);
+      plTrendChart.update();
+    }
+
+    document.getElementById('inspectionForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData();
+      formData.append('ref_image', document.getElementById('refImageInput').files[0]);
+      formData.append('tgt_image', document.getElementById('tgtImageInput').files[0]);
+
+      const economics = {
+        sku: document.getElementById('skuInput').value,
+        msrp: parseFloat(document.getElementById('msrpSlider').value),
+        freight: parseFloat(document.getElementById('freightSlider').value),
+        refurb_cost: parseFloat(document.getElementById('refurbSlider').value),
+        restock_fee_pct: parseFloat(document.getElementById('restockFeeSlider').value),
+        labor_rate: parseFloat(document.getElementById('laborRateSlider').value),
+        harvest_value: parseFloat(document.getElementById('harvestSlider').value),
+        ewaste_fee: parseFloat(document.getElementById('ewasteFeeSlider').value),
+        secondary_discount: parseFloat(document.getElementById('secondaryDiscountSlider').value)
+      };
+
+      formData.append('economics_json', JSON.stringify(economics));
+
+      const res = await fetch('/api/evaluate', { method: 'POST', body: formData });
+      const data = await res.json();
+
+      document.getElementById('lifecycleBadge').textContent = data.lifecycle_action;
+      document.getElementById('recommendationText').textContent = data.recommendation;
+      document.getElementById('reasonText').textContent = data.analysis.reason;
+      document.getElementById('netRecoveryText').textContent = `$${data.net_recovery.toFixed(2)}`;
+      document.getElementById('feeSummaryText').textContent = `Freight: $${data.shipping_charged.toFixed(2)} | Labor: $${data.labor_cost.toFixed(2)}`;
+
+      document.getElementById('fadePctText').textContent = `${data.analysis.color_fade_pct}%`;
+      document.getElementById('crackPctText').textContent = `${data.analysis.crack_severity_pct}%`;
+      document.getElementById('distortionPctText').textContent = `${data.analysis.distortion_pct}%`;
+      document.getElementById('ssimPctText').textContent = `${data.analysis.ssim_pct}%`;
+
+      const tag = document.getElementById('repeatTag');
+      if (data.is_repeat_return) tag.classList.remove('hidden'); else tag.classList.add('hidden');
+
+      refreshAnalytics();
+    });
+
+    refreshAnalytics();
+  </script>
+</body>
+</html>
